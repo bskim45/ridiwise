@@ -1,0 +1,58 @@
+[project]
+name = "ridiwise"
+description = "Sync Ridibooks book notes to Readwise.io"
+authors = [
+  { name = "Bumsoo Kim", email = "bskim45@gmail.com" }
+]
+dependencies = [
+    "typer>=0.12.3",
+    "httpx>=0.27.0",
+    "browser-cookie3>=0.19.1",
+    "merge-args>=0.1.5",
+    "playwright>=1.45.1",
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">= 3.10"
+
+dynamic = ["version"]
+
+[project.scripts]
+"ridiwise" = "ridiwise.cmd.main:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+  "pre-commit>=3.7.1",
+  "pytest>=8.3.1",
+  "ruff>=0.5.4",
+  "pylint>=3.2.6",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ridiwise"]
+
+[tool.hatch.version]
+path = "src/ridiwise/__init__.py"
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+extend-select = [
+  # https://docs.astral.sh/ruff/rules/
+  "E501", # line-too-long,
+  "I", # isort
+]
+
+[tool.ruff.format]
+quote-style = "single"
