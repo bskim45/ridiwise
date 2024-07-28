@@ -36,8 +36,6 @@ markdown-it-py==3.0.0
     # via rich
 mdurl==0.1.2
     # via markdown-it-py
-merge-args==0.1.5
-    # via ridiwise
 playwright==1.45.1
     # via ridiwise
 pycryptodomex==3.20.0
