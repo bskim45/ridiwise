@@ -65,6 +65,7 @@ def readwise(
                         'note': note['memo'],
                         'source_url': book['book_url'],
                         'highlight_url': f'{book["book_notes_url"]}#annotation_{note["id"]}',  # noqa: E501 pylint: disable=line-too-long
+                        'image_url': book['book_cover_image_url'],
                     }
                     for note in book['notes']
                 ]

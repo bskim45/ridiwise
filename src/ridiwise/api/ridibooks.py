@@ -19,6 +19,8 @@ COOKIE_DOMAIN = f'https://{DOMAIN}'
 SELECTOR_LOGIN_USER_ID = 'input[placeholder="아이디"]'
 SELECTOR_LOGIN_PASSWORD = 'input[placeholder="비밀번호"]'
 
+BOOK_COVER_IMAGE_URL_FORMAT = 'https://img.ridicdn.net/cover/{book_id}/xxlarge#1'
+
 
 # pylint: disable=import-outside-toplevel
 def get_cookie_jar(browser: str) -> http.cookiejar.CookieJar:
@@ -48,6 +50,7 @@ class Book(TypedDict):
     book_id: str
     notes: list[Note]
     authors: list[str]
+    book_cover_image_url: str
 
 
 class RidiClient(BrowserBaseClient):
@@ -181,6 +184,7 @@ class RidiClient(BrowserBaseClient):
             'book_id': book_id,
             'notes': [],
             'authors': authors,
+            'book_cover_image_url': BOOK_COVER_IMAGE_URL_FORMAT.format(book_id=book_id),
         }
 
     def get_notes_by_book(self, book_id):
