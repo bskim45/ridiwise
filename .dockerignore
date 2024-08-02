@@ -1,0 +1,19 @@
+# venv
+.venv
+venv/
+
+# git
+.git
+
+# ide
+.idea
+.vscode
+
+# python
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+.ruff_cache
+.envrc
+.python-version

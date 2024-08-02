@@ -1,4 +1,5 @@
 VENV := ./.venv/bin
+VERSION ?= $(shell rye version)
 
 .PHONY: install
 install:
@@ -35,6 +36,35 @@ test:
 
 clean:
 	rm -rf htmlcov pytest-coverage.txt
+
+### Docker
+DOCKER_REPO ?= bskim45/ridiwise
+LATEST_IMAGE := $(DOCKER_REPO):latest
+VERSION_IMAGE := $(DOCKER_REPO):$(shell rye version)
+
+.PHONY: docker-build
+docker-build:
+	docker build \
+		-t $(LATEST_IMAGE) -t $(VERSION_IMAGE) \
+		--build-arg VERSION=$(VERSION) \
+		--build-arg REVISION=$(shell git rev-parse HEAD) \
+		.
+
+.PHONY: docker-buildx
+docker-buildx:
+	docker buildx build \
+		-t $(LATEST_IMAGE) -t $(VERSION_IMAGE) \
+		--platform linux/amd64,linux/arm64 \
+		--build-arg VERSION=$(VERSION) \
+		--build-arg REVISION=$(shell git rev-parse HEAD) \
+		--output="type=image" \
+		.
+
+.PHONY: docker-push
+push: build
+	docker push $(LATEST_IMAGE)
+	docker push $(VERSION_IMAGE)
+
 
 %:
 	@:

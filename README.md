@@ -4,12 +4,21 @@ Sync Ridibooks book notes to Readwise.io
 
 ## Installation
 
-### Prerequisites
+### Docker
+
+```bash
+docker run --rm -it bskim45/ridiwise --help
+```
+
+### Pip/Pipx
+
+Prerequisites:
 
 - Python 3.10 or later
 - [Playwright](https://playwright.dev/python/docs/intro)
 
 Install playwright:
+
 ```bash
 # with pip
 pip install playwright
@@ -22,6 +31,7 @@ playwright install chromium
 ```
 
 Install ridiwise:
+
 ```bash
 # with pip
 pip install git+https://github.com/bskim45/ridiwise.git
