@@ -61,12 +61,12 @@ quote-style = "single"
 
 
 [tool.bumpversion]
-current_version = "1.1.0"
+current_version = "1.2.0"
 tag = true
 sign_tags = true
-tag_message = ""
 commit = true
 message = "chore: bump version to {new_version}"
+allow_dirty = true
 
 [[tool.bumpversion.files]]
 filename = 'src/ridiwise/__init__.py'
