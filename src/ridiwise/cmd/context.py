@@ -15,4 +15,6 @@ class ContextState(TypedDict):
     config_dir: Path
     cache_dir: Path
 
+    # headless browser options
     headless_mode: bool
+    browser_timeout_seconds: int

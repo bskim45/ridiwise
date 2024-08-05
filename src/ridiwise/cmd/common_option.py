@@ -3,7 +3,7 @@ from typing import Optional
 
 import typer
 
-from ridiwise.cmd.context import AuthState
+from ridiwise.cmd.context import AuthState, ContextState
 
 
 @enum.unique
@@ -18,13 +18,17 @@ def check_common_options(
     user_id: Optional[str],
     password: Optional[str],
     headless_mode: bool,
+    browser_timeout_seconds: int,
 ):
+    context: ContextState = ctx.ensure_object(dict)
+
     auth_state: AuthState = {
         'auth_method': auth_method,
     }
-    ctx.obj['auth'] = auth_state
 
-    ctx.obj['headless_mode'] = headless_mode
+    context['auth'] = auth_state
+    context['headless_mode'] = headless_mode
+    context['browser_timeout_seconds'] = browser_timeout_seconds
 
     if auth_method == RidiAuthMethod.HEADLESS_BROWSER:
         if not all([user_id, password]):
@@ -56,6 +60,11 @@ def common_params(
         envvar='HEADLESS_MODE',
         help='Hide the browser window (headless mode).',
     ),
+    browser_timeout_seconds: int = typer.Option(
+        default=10,
+        envvar='BROWSER_TIMEOUT_SECONDS',
+        help='Timeout for browser page loading in seconds.',
+    ),
 ):
     ctx.ensure_object(dict)
     check_common_options(
@@ -64,4 +73,5 @@ def common_params(
         user_id=user_id,
         password=password,
         headless_mode=headless_mode,
+        browser_timeout_seconds=browser_timeout_seconds,
     )

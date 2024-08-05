@@ -112,7 +112,7 @@ class RidiClient(BrowserBaseClient):
             page.click('button[type="submit"]')
 
             try:
-                page.wait_for_url('**/myridi', timeout=3000)
+                page.wait_for_url('**/myridi')
                 self.cache_dir.mkdir(parents=True, exist_ok=True)
                 self.browser_context.storage_state(
                     path=self.cache_dir / self.storage_state_filename

@@ -14,11 +14,13 @@ class BrowserBaseClient(BaseClient):
         self,
         cache_dir: Path,
         headless: bool = True,
+        browser_timeout_seconds: int = 10,
         *args,
         **kwargs,
     ):
         self.cache_dir = cache_dir
         self.headless = headless
+        self.browser_timeout_seconds = browser_timeout_seconds
 
         self.playwright = None
         self.browser = None
@@ -36,6 +38,8 @@ class BrowserBaseClient(BaseClient):
             )
         except FileNotFoundError:
             self.browser_context = self.browser.new_context()
+
+        self.browser_context.set_default_timeout(self.browser_timeout_seconds * 1000)
 
         super().__enter__()
         return self

@@ -4,7 +4,7 @@ from typing_extensions import Annotated
 from ridiwise.api.readwise import ReadwiseClient
 from ridiwise.api.ridibooks import RidiClient
 from ridiwise.cmd.common_option import common_params
-from ridiwise.cmd.context import AuthState
+from ridiwise.cmd.context import ContextState
 from ridiwise.cmd.utils import with_extra_parameters
 
 app = typer.Typer()
@@ -33,15 +33,16 @@ def readwise(
     Sync Ridibooks book notes to Readwise.io.
     """
 
-    logger = ctx.obj['logger']
-    auth_state: AuthState = ctx.obj['auth']
+    context: ContextState = ctx.ensure_object(dict)
+    logger = context['logger']
 
     with (
         RidiClient(
-            user_id=auth_state['user_id'],
-            password=auth_state['password'],
-            cache_dir=ctx.obj['cache_dir'],
-            headless=ctx.obj['headless_mode'],
+            user_id=context['auth']['user_id'],
+            password=context['auth']['password'],
+            cache_dir=context['cache_dir'],
+            headless=context['headless_mode'],
+            browser_timeout_seconds=context['browser_timeout_seconds'],
         ) as ridi_client,
         ReadwiseClient(token=readwise_token) as readwise_client,
     ):
