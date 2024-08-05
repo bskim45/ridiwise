@@ -10,18 +10,25 @@
 #   universal: false
 
 -e file:.
+annotated-types==0.7.0
+    # via pydantic
 anyio==4.4.0
     # via httpx
 astroid==3.2.4
     # via pylint
+bracex==2.5
+    # via wcmatch
 browser-cookie3==0.19.1
     # via ridiwise
+bump-my-version==0.24.3
 certifi==2024.7.4
     # via httpcore
     # via httpx
 cfgv==3.4.0
     # via pre-commit
 click==8.1.7
+    # via bump-my-version
+    # via rich-click
     # via typer
 dill==0.3.8
     # via pylint
@@ -66,18 +73,35 @@ playwright==1.45.1
 pluggy==1.5.0
     # via pytest
 pre-commit==3.7.1
+prompt-toolkit==3.0.36
+    # via questionary
 pycryptodomex==3.20.0
     # via browser-cookie3
+pydantic==2.8.2
+    # via bump-my-version
+    # via pydantic-settings
+pydantic-core==2.20.1
+    # via pydantic
+pydantic-settings==2.4.0
+    # via bump-my-version
 pyee==11.1.0
     # via playwright
 pygments==2.18.0
     # via rich
 pylint==3.2.6
 pytest==8.3.1
+python-dotenv==1.0.1
+    # via pydantic-settings
 pyyaml==6.0.1
     # via pre-commit
+questionary==2.0.1
+    # via bump-my-version
 rich==13.7.1
+    # via bump-my-version
+    # via rich-click
     # via typer
+rich-click==1.8.3
+    # via bump-my-version
 ruff==0.5.4
 shellingham==1.5.4
     # via typer
@@ -85,11 +109,19 @@ sniffio==1.3.1
     # via anyio
     # via httpx
 tomlkit==0.13.0
+    # via bump-my-version
     # via pylint
 typer==0.12.3
     # via ridiwise
 typing-extensions==4.12.2
+    # via pydantic
+    # via pydantic-core
     # via pyee
+    # via rich-click
     # via typer
 virtualenv==20.26.3
     # via pre-commit
+wcmatch==9.0
+    # via bump-my-version
+wcwidth==0.2.13
+    # via prompt-toolkit
