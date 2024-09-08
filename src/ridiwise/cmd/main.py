@@ -11,7 +11,9 @@ from ridiwise.cmd import sync
 app = typer.Typer(
     context_settings={'help_option_names': ['-h', '--help']},
     no_args_is_help=True,
+    pretty_exceptions_show_locals=False,
 )
+
 app.add_typer(
     sync.app,
     name='sync',
