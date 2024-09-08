@@ -55,6 +55,12 @@ cover/
 # Cython debug symbols
 cython_debug/
 
+# ruff
+.ruff_cache/
+
+# LSP config files
+pyrightconfig.json
+
 # venv
 .venv
 venv/
