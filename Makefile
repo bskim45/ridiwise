@@ -66,5 +66,10 @@ push: build
 	docker push $(VERSION_IMAGE)
 
 
+.PHONY: bump-version
+BUMP_TYPE ?= minor
+bump-version:
+	$(VENV)/bump-my-version bump $(BUMP_TYPE)
+
 %:
 	@:
