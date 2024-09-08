@@ -1,26 +1,62 @@
 import json
-from typing import Optional, TypedDict
+from typing import Literal, Optional, TypedDict
 
 import httpx
 
 from ridiwise.api.base_client import BaseClient, HTTPTokenAuth
 
+# https://readwise.io/api_deets
 API_BASE_URL = 'https://readwise.io/api/v2'
 
 
-class CreateHighlight(TypedDict, total=False):
+type BookCategory = Literal['books', 'articles', 'tweets', 'podcasts']
+type HightlightLocationType = Literal['page', 'order', 'time_offset']
+
+
+class CreateHighlightRequestItem(TypedDict, total=False):
     text: str
     title: str
     author: Optional[str]
-    category: Optional[str]
-    location: Optional[str]
-    location_type: Optional[str]
+    category: Optional[BookCategory]
+    location: Optional[int]
+    location_type: Optional[HightlightLocationType]
     highlighted_at: Optional[str]
     source_url: Optional[str]
     source_type: Optional[str]
     image_url: Optional[str]
     note: Optional[str]
     highlight_url: Optional[str]
+
+
+class CreateHighlightsRequest(TypedDict):
+    highlights: list[CreateHighlightRequestItem]
+
+
+class CreateHighlightResponseItem(TypedDict):
+    id: int
+    title: Optional[str]
+    author: Optional[str]
+    category: Optional[BookCategory]
+    source: Optional[str]
+    num_highlights: int
+    last_highlight_at: Optional[str]
+    updated: str
+    cover_image_url: Optional[str]
+    highlights_url: Optional[str]
+    source_url: Optional[str]
+    modified_highlights: list[int]
+
+
+type CreateHighlightsResponse = list[CreateHighlightResponseItem]
+
+
+class CreateHighlightTagRequest(TypedDict):
+    name: str
+
+
+class CreateHighlightTagResponse(TypedDict):
+    id: int
+    name: str
 
 
 class ReadwiseClient(BaseClient):
@@ -48,12 +84,27 @@ class ReadwiseClient(BaseClient):
 
     def create_highlights(
         self,
-        highlights: list[CreateHighlight],
-    ):
-        payload = {'highlights': highlights}
+        highlights: list[CreateHighlightRequestItem],
+    ) -> CreateHighlightsResponse:
+        payload: CreateHighlightsRequest = {'highlights': highlights}
 
         self.logger.debug(json.dumps(payload, indent=2, ensure_ascii=False))
 
         response = self.client.post('/highlights/', auth=self.auth, json=payload)
+        response.raise_for_status()
+        return response.json()
+
+    def create_highlight_tag(
+        self,
+        highlight_id: int,
+        tag: str,
+    ) -> CreateHighlightTagResponse:
+        payload: CreateHighlightTagRequest = {'name': tag}
+
+        response = self.client.post(
+            f'/highlights/{highlight_id}/tags/',
+            auth=self.auth,
+            json=payload,
+        )
         response.raise_for_status()
         return response.json()

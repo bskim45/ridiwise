@@ -1,3 +1,5 @@
+from typing import Optional
+
 import typer
 from typing_extensions import Annotated
 
@@ -28,6 +30,12 @@ def readwise(
             help='Readwise.io API token. https://readwise.io/access_token',
         ),
     ],
+    tags: Annotated[
+        Optional[list[str]],
+        typer.Option(
+            help='Tags to attach to the highlights. Multiple tags can be provided.',
+        ),
+    ] = None,
 ):
     """
     Sync Ridibooks book notes to Readwise.io.
@@ -54,7 +62,7 @@ def readwise(
         }
 
         for book in books:
-            readwise_client.create_highlights(
+            highlights_response = readwise_client.create_highlights(
                 highlights=[
                     {
                         'text': note['highlighted_text'],
@@ -65,12 +73,23 @@ def readwise(
                         'highlighted_at': note['created_date'].isoformat(),
                         'note': note['memo'],
                         'source_url': book['book_url'],
-                        'highlight_url': f'{book["book_notes_url"]}#annotation_{note["id"]}',  # noqa: E501 pylint: disable=line-too-long
+                        'highlight_url': (
+                            f'{book["book_notes_url"]}#annotation_{note["id"]}'
+                        ),
                         'image_url': book['book_cover_image_url'],
                     }
                     for note in book['notes']
                 ]
             )
+
+            modified_highlight_ids = highlights_response[0]['modified_highlights']
+
+            if tags:
+                for highlight_id, tag in zip(modified_highlight_ids, tags):
+                    readwise_client.create_highlight_tag(
+                        highlight_id=highlight_id,
+                        tag=tag,
+                    )
 
             result_count['books'] += 1
             result_count['highlights'] += len(book['notes'])
