@@ -1,5 +1,5 @@
 import json
-from typing import Literal, Optional, TypedDict
+from typing import Literal, Optional, TypeAlias, TypedDict
 
 import httpx
 
@@ -9,8 +9,8 @@ from ridiwise.api.base_client import BaseClient, HTTPTokenAuth
 API_BASE_URL = 'https://readwise.io/api/v2'
 
 
-type BookCategory = Literal['books', 'articles', 'tweets', 'podcasts']
-type HightlightLocationType = Literal['page', 'order', 'time_offset']
+BookCategory: TypeAlias = Literal['books', 'articles', 'tweets', 'podcasts']
+HighlightLocationType: TypeAlias = Literal['page', 'order', 'time_offset']
 
 
 class CreateHighlightRequestItem(TypedDict, total=False):
@@ -19,7 +19,7 @@ class CreateHighlightRequestItem(TypedDict, total=False):
     author: Optional[str]
     category: Optional[BookCategory]
     location: Optional[int]
-    location_type: Optional[HightlightLocationType]
+    location_type: Optional[HighlightLocationType]
     highlighted_at: Optional[str]
     source_url: Optional[str]
     source_type: Optional[str]
@@ -47,7 +47,7 @@ class CreateHighlightResponseItem(TypedDict):
     modified_highlights: list[int]
 
 
-type CreateHighlightsResponse = list[CreateHighlightResponseItem]
+CreateHighlightsResponse: TypeAlias = list[CreateHighlightResponseItem]
 
 
 class CreateHighlightTagRequest(TypedDict):
