@@ -7,7 +7,10 @@ Sync Ridibooks book notes to Readwise.io
 ### Docker
 
 ```bash
-docker run --rm -it bskim45/ridiwise --help
+# Docker Hub (docker.io)
+$ docker run --rm -it bskim45/ridiwise --help
+# Github Container Registry (ghcr.io)
+$ docker run --rm -it ghcr.io/bskim45/ridiwise --help
 ```
 
 ### Pip/Pipx
