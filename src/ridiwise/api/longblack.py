@@ -29,8 +29,8 @@ class Note(TypedDict):
     note_id: str
     note_url: str
     title: str
-    author: str
-    cover_image_url: str
+    author: Optional[str]
+    cover_image_url: Optional[str]
 
 
 class Scrap(TypedDict):
@@ -170,7 +170,7 @@ class LongblackClient(BrowserBaseClient):
         note_title = note_info.locator('span').text_content().strip()
         note_cover_image_url = note_info.locator('img').get_attribute('src')
 
-        memo = self.get_memo(elem)
+        memo = self._get_memo(elem)
 
         return {
             'scrap_id': scrap_id,
@@ -187,7 +187,8 @@ class LongblackClient(BrowserBaseClient):
             },
         }
 
-    def get_memo(self, elem: Locator) -> Optional[str]:
+    @staticmethod
+    def _get_memo(elem: Locator) -> Optional[str]:
         memo_button = elem.locator('.actions').locator('button.show-memo')
         indicator = memo_button.locator('.memo-icon.dot')
 
@@ -195,10 +196,15 @@ class LongblackClient(BrowserBaseClient):
             return None
 
         memo_button.click()
-        memo_modal = elem.page.locator('.memo-modal').locator('visible=true')
+        memo_modals = elem.page.locator('.memo-modal')
+        memo_modal = memo_modals.locator('visible=true')
 
         if not memo_modal.is_visible():
-            return None
+            try:
+                memo_modal = memo_modals.last
+                memo_modal.wait_for(state='visible')
+            except PlaywrightTimeoutError:
+                return None
 
         memo = memo_modal.get_by_role('textbox').input_value()
         memo_modal.locator('.actions').locator('button.negative').click()
