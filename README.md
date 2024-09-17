@@ -1,6 +1,6 @@
 # ridiwise
 
-Sync Ridibooks book notes to Readwise.io
+Sync book/article highlights to Readwise.io
 
 ## Installation
 
@@ -49,7 +49,7 @@ pipx install git+https://github.com/bskim45/ridiwise.git
 $ ridiwise --help
  Usage: ridiwise [OPTIONS] COMMAND [ARGS]...  
 
- ridiwise: Sync Ridibooks book notes to Readwise.io
+ ridiwise: Sync book/article highlights to Readwise.io
 
  (...)
 ```

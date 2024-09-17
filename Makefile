@@ -30,12 +30,14 @@ test:
 		--cov-report term-missing:skip-covered \
 		--cov-report html \
 		--cov-report xml \
+		--junitxml=junit.xml \
 		-vvv \
-		tests
+		--pyargs ridiwise \
+		--cov src \
 		| tee pytest-coverage.txt
 
 clean:
-	rm -rf htmlcov pytest-coverage.txt
+	rm -rf .coverage htmlcov coverage.xml pytest-coverage.txt junit.xml
 
 ### Docker
 DOCKER_REPO ?= bskim45/ridiwise

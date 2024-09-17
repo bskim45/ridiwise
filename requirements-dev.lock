@@ -30,6 +30,8 @@ click==8.1.7
     # via bump-my-version
     # via rich-click
     # via typer
+coverage==7.6.1
+    # via pytest-cov
 dill==0.3.8
     # via pylint
 distlib==0.3.8
@@ -90,6 +92,8 @@ pygments==2.18.0
     # via rich
 pylint==3.2.6
 pytest==8.3.1
+    # via pytest-cov
+pytest-cov==5.0.0
 python-dotenv==1.0.1
     # via pydantic-settings
 pyyaml==6.0.1

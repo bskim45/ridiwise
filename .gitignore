@@ -48,6 +48,9 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+junit.xml
+pytest-coverage.txt
+
 
 # pyenv
 .python-version
