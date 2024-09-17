@@ -109,7 +109,7 @@ def readwise(
         books = ridi_client.get_books_from_shelf()
 
         if not books:
-            typer.Abort('No book notes found.')
+            raise typer.Abort('No book notes found.')
 
         result_count = {
             'books': 0,

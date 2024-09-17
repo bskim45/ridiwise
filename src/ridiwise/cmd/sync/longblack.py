@@ -109,7 +109,7 @@ def readwise(
         scraps = longblack_client.get_scraps()
 
         if not scraps:
-            typer.Abort('No scraps found.')
+            raise typer.Abort('No scraps found.')
 
         result_count = {
             'articles': 0,
@@ -146,9 +146,7 @@ def readwise(
                     tag=tag,
                 )
 
-        result_count['articles'] = len(
-            set([scrap['note']['note_id'] for scrap in scraps])
-        )
+        result_count['articles'] = len({scrap['note']['note_id'] for scrap in scraps})
         result_count['highlights'] = len(scraps)
 
         print('Synced notes to Readwise.io:')

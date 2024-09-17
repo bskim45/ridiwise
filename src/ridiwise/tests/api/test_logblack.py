@@ -9,7 +9,9 @@ class TestLongblackClient(unittest.TestCase):
     def test_parse_scrap_url(self):
         test_cases = [
             {
-                'url': 'https://www.longblack.co/note/12345#memoId=H172649477900012abc123',
+                'url': (
+                    'https://www.longblack.co/note/12345#memoId=H172649477900012abc123'
+                ),
                 'expected': ('12345', 'H172649477900012abc123'),
             },
             {
