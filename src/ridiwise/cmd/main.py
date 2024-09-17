@@ -53,7 +53,7 @@ def main(
     ] = '~/.cache/ridiwise',
 ):
     """
-    ridiwise: Sync Ridibooks book notes to Readwise.io
+    ridiwise: Sync book/article highlights to Readwise.io
     """
     ctx.ensure_object(dict)
     ctx.obj = {
