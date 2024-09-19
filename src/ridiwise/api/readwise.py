@@ -98,7 +98,8 @@ class ReadwiseClient(BaseClient):
         self,
         highlight_id: int,
         tag: str,
-    ) -> CreateHighlightTagResponse:
+        ignore_error_if_exists: bool = True,
+    ) -> Optional[CreateHighlightTagResponse]:
         payload: CreateHighlightTagRequest = {'name': tag}
 
         response = self.client.post(
@@ -106,5 +107,17 @@ class ReadwiseClient(BaseClient):
             auth=self.auth,
             json=payload,
         )
+
+        if response.status_code == 400 and ignore_error_if_exists:
+            try:
+                error_response = response.json()
+
+                if error_response.get('name') == 'Tag with this name already exists':
+                    self.logger.info(f'Tag already exists: {tag}')
+                    return None
+
+            except json.JSONDecodeError:
+                pass
+
         response.raise_for_status()
         return response.json()
