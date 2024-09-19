@@ -9,6 +9,7 @@ def check_common_options(
     ctx: typer.Context,
     headless_mode: bool,
     browser_timeout_seconds: int,
+    error_on_empty_source: bool,
 ):
     context: ContextState = ctx.ensure_object(dict)
 
@@ -17,6 +18,7 @@ def check_common_options(
 
     context['headless_mode'] = headless_mode
     context['browser_timeout_seconds'] = browser_timeout_seconds
+    context['error_on_empty_source'] = error_on_empty_source
 
 
 def common_params(
@@ -31,10 +33,16 @@ def common_params(
         envvar='BROWSER_TIMEOUT_SECONDS',
         help='Timeout for browser page loading in seconds.',
     ),
+    error_on_empty_source: bool = typer.Option(
+        default=False,
+        envvar='ERROR_ON_EMPTY_SOURCE',
+        help='Exit with exit code 2 if no article/book is found from the source.',
+    ),
 ):
     ctx.ensure_object(dict)
     check_common_options(
         ctx=ctx,
         headless_mode=headless_mode,
         browser_timeout_seconds=browser_timeout_seconds,
+        error_on_empty_source=error_on_empty_source,
     )

@@ -19,9 +19,12 @@ class AuthState(TypedDict, total=False):
 class ContextState(TypedDict):
     logger: logging.Logger
     auths: dict[str, AuthState]
+
     config_dir: Path
     cache_dir: Path
 
     # headless browser options
     headless_mode: bool
     browser_timeout_seconds: int
+
+    error_on_empty_source: bool

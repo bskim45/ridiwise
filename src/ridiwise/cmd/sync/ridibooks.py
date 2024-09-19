@@ -7,6 +7,7 @@ from ridiwise.api.readwise import ReadwiseClient
 from ridiwise.api.ridibooks import RidiClient
 from ridiwise.cmd.common_option import common_params
 from ridiwise.cmd.context import AuthMethod, AuthState, ContextState
+from ridiwise.cmd.exit_code import EXIT_CODE_EMPTY_SOURCE
 from ridiwise.cmd.utils import with_extra_parameters
 
 PROVIDER = 'ridibooks'
@@ -109,7 +110,12 @@ def readwise(
         books = ridi_client.get_books_from_shelf()
 
         if not books:
-            raise typer.Abort('No book notes found.')
+            print('No book notes found.')
+
+            if context['error_on_empty_source']:
+                raise typer.Exit(EXIT_CODE_EMPTY_SOURCE)
+
+            raise typer.Exit()
 
         result_count = {
             'books': 0,
