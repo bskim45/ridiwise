@@ -1,32 +1,31 @@
-VENV := ./.venv/bin
-VERSION ?= $(shell rye version)
+VERSION ?= $(shell uv version --short --preview)
 
 .PHONY: install
 install:
-	rye sync
-	$(VENV)/pre-commit install
-	$(VENV)/playwright install chromium
+	uv sync
+	uv run pre-commit install
+	uv run playwright install chromium
 
 .PHONY: lint
 lint:
-	$(VENV)/ruff check src
-	$(VENV)/pylint src
+	uv run ruff check src
+	uv run pylint src
 
 .PHONY: lint-fix
 lint-fix:
-	$(VENV)/ruff check --fix src
+	uv run ruff check --fix src
 
 .PHONY: format
 format:
 # sort imports
-	$(VENV)/ruff check --select I --fix src
+	uv run ruff check --select I --fix src
 # format code
-	$(VENV)/ruff format --diff src || true
-	$(VENV)/ruff format src
+	uv run ruff format --diff src || true
+	uv run ruff format src
 
 .PHONY: test
 test:
-	$(VENV)/pytest \
+	uv run pytest \
 		--cov-report term-missing:skip-covered \
 		--cov-report html \
 		--cov-report xml \
@@ -42,7 +41,7 @@ clean:
 ### Docker
 DOCKER_REPO ?= bskim45/ridiwise
 LATEST_IMAGE := $(DOCKER_REPO):latest
-VERSION_IMAGE := $(DOCKER_REPO):$(shell rye version)
+VERSION_IMAGE := $(DOCKER_REPO):$(VERSION)
 
 .PHONY: docker-build
 docker-build:
@@ -71,7 +70,7 @@ push: build
 .PHONY: bump-version
 BUMP_TYPE ?= minor
 bump-version:
-	$(VENV)/bump-my-version bump $(BUMP_TYPE)
+	uv run bump-my-version bump $(BUMP_TYPE)
 
 %:
 	@:

@@ -16,7 +16,7 @@ repos:
       - id: check-yaml
 
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.18
+    rev: v0.24.1
     hooks:
       - id: validate-pyproject
 
@@ -27,10 +27,10 @@ repos:
         args: ['-formatter', 'retain_line_breaks_single=true']
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.4
+    rev: v0.12.0
     hooks:
       # Run the linter.
-      - id: ruff
+      - id: ruff-check
       # Run the formatter.
       - id: ruff-format
         args: [--check]
