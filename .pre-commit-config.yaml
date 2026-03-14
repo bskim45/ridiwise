@@ -35,6 +35,11 @@ repos:
       - id: ruff-format
         args: [--check]
 
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.23.1
+    hooks:
+      - id: zizmor
+
   - repo: local
     hooks:
       - id: pylint
