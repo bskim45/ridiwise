@@ -3,7 +3,7 @@ VERSION ?= $(shell uv version --short --preview)
 .PHONY: install
 install:
 	uv sync
-	uv run pre-commit install
+	uv run prek install
 	uv run playwright install chromium
 
 .PHONY: lint
