@@ -80,3 +80,9 @@ venv/
 ### env
 .env*
 !.env.example
+
+# claude local settings
+.claude/settings.local.json
+
+# worktrunk (git worktree)
+.worktrees/
