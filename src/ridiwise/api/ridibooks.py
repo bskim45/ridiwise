@@ -125,28 +125,30 @@ class RidiClient(BrowserBaseClient):
                     skip_button_selector = 'button:has-text("다음에 변경")'
                     page.wait_for_selector(skip_button_selector, state='visible')
                     page.locator(skip_button_selector).click()
-                except PlaywrightTimeoutError:
-                    self.logger.warning(
-                        (
-                            'Timed out waiting for "다음에 변경" button '
-                            'on password change page.'
-                        )
+                    page.wait_for_url(
+                        lambda url: '/account/' not in url,
                     )
+                except PlaywrightTimeoutError:
+                    self.logger.error(
+                        'Timed out waiting for redirect after skipping password change'
+                    )
+                    raise
                 except Exception as e:
                     self.logger.error(
                         f'An error occurred while clicking "다음에 변경" button: {e}'
                     )
-                    raise e
+                    raise
+            else:
+                try:
+                    page.wait_for_url('**/myridi')
+                except PlaywrightTimeoutError:
+                    self.logger.error('Login timeout waiting for myridi redirect')
+                    raise
 
-            try:
-                page.wait_for_url('**/myridi')
-                self.cache_dir.mkdir(parents=True, exist_ok=True)
-                self.browser_context.storage_state(
-                    path=self.cache_dir / self.storage_state_filename
-                )
-            except PlaywrightTimeoutError as e:
-                self.logger.error('Login timeout')
-                raise e
+            self.cache_dir.mkdir(parents=True, exist_ok=True)
+            self.browser_context.storage_state(
+                path=self.cache_dir / self.storage_state_filename
+            )
 
     def is_authenticated(self) -> bool:
         with self.browser_context.new_page() as page:
@@ -173,6 +175,7 @@ class RidiClient(BrowserBaseClient):
 
         with self.browser_context.new_page() as page:
             page.goto(f'{self.base_url}/reading-note/shelf')
+            page.wait_for_selector('article li')
             items = page.query_selector_all('article li')
 
             books = [self._get_book_info_from_dom(item) for item in items]
