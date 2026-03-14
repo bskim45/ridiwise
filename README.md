@@ -17,7 +17,7 @@ $ docker run --rm -it ghcr.io/bskim45/ridiwise --help
 
 Prerequisites:
 
-- Python 3.10 or later
+- Python 3.13 or later
 - [Playwright](https://playwright.dev/python/docs/intro)
 
 Install playwright:

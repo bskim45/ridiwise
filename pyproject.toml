@@ -1,9 +1,7 @@
 [project]
 name = "ridiwise"
 description = "Sync Ridibooks book notes to Readwise.io"
-authors = [
-  { name = "Bumsoo Kim", email = "bskim45@gmail.com" }
-]
+authors = [{ name = "Bumsoo Kim", email = "bskim45@gmail.com" }]
 dependencies = [
   "typer>=0.12.3",
   "httpx>=0.27.0",
@@ -12,7 +10,7 @@ dependencies = [
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">= 3.10"
+requires-python = ">= 3.13"
 version = "1.7.0"
 
 [project.scripts]
@@ -52,7 +50,7 @@ src = ["src", "tests"]
 extend-select = [
   # https://docs.astral.sh/ruff/rules/
   "E501", # line-too-long,
-  "I", # isort
+  "I",    # isort
 ]
 
 [tool.ruff.format]
@@ -77,9 +75,7 @@ filename = 'src/ridiwise/__init__.py'
 
 [tool.coverage.run]
 parallel = true
-omit = [
-  "*/tests/*",
-]
+omit = ["*/tests/*"]
 
 [tool.uv]
 required-version = ">=0.7.2"
