@@ -128,20 +128,22 @@ class RidiClient(BrowserBaseClient):
                     page.wait_for_url(
                         lambda url: '/account/' not in url,
                     )
-                except PlaywrightTimeoutError as e:
-                    self.logger.error('Login timeout')
-                    raise e
+                except PlaywrightTimeoutError:
+                    self.logger.error(
+                        'Timed out waiting for redirect after skipping password change'
+                    )
+                    raise
                 except Exception as e:
                     self.logger.error(
                         f'An error occurred while clicking "다음에 변경" button: {e}'
                     )
-                    raise e
+                    raise
             else:
                 try:
                     page.wait_for_url('**/myridi')
-                except PlaywrightTimeoutError as e:
-                    self.logger.error('Login timeout')
-                    raise e
+                except PlaywrightTimeoutError:
+                    self.logger.error('Login timeout waiting for myridi redirect')
+                    raise
 
             self.cache_dir.mkdir(parents=True, exist_ok=True)
             self.browser_context.storage_state(
