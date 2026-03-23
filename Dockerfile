@@ -3,7 +3,7 @@ ARG UV_VERSION=0.10.10
 
 FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv
 
-FROM python:${PYTHON_VERSION}-slim AS python-base
+FROM python:${PYTHON_VERSION}-slim-bookworm AS python-base
 
 ARG UID=1001
 ARG VERSION
