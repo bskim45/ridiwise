@@ -129,6 +129,18 @@ class RidiClient(BrowserBaseClient):
                     'Timed out waiting for page to load after login submit.'
                 )
 
+            # Check for login error: only meaningful while still on the login page
+            if '/account/login' in page.url:
+                if 'error=invalid_user' in page.url:
+                    self.logger.error('Login failed: invalid username or password')
+                    raise RuntimeError('Login failed: invalid username or password')
+                ui_error = page.query_selector(
+                    'p:has-text("아이디 또는 비밀번호를 확인해주세요")'
+                )
+                if ui_error:
+                    self.logger.error('Login failed: invalid username or password')
+                    raise RuntimeError('Login failed: invalid username or password')
+
             # Check if redirected to password change page
             if '/account/change-password' in page.url:
                 try:

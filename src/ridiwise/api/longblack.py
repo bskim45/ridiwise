@@ -19,6 +19,7 @@ COOKIE_DOMAIN = f'https://{DOMAIN}'
 SELECTOR_LOGIN_USER_ID = 'form.login-form input[name="email"]'
 SELECTOR_LOGIN_PASSWORD = 'form.login-form input[name="password"]'
 SELECTOR_LOGIN_BUTTON = 'form.login-form button[type="submit"]'
+SELECTOR_LOGIN_ERROR = 'form.login-form div.message'
 
 
 class Note(TypedDict):
@@ -114,6 +115,13 @@ class LongblackClient(BrowserBaseClient):
 
             page.wait_for_selector(SELECTOR_LOGIN_BUTTON)
             page.click(SELECTOR_LOGIN_BUTTON)
+
+            # Check for login error while still on login page
+            if '/login' in page.url:
+                ui_error = page.query_selector(SELECTOR_LOGIN_ERROR)
+                if ui_error:
+                    self.logger.error('Login failed: invalid username or password')
+                    raise RuntimeError('Login failed: invalid username or password')
 
             try:
                 page.wait_for_url(f'{self.base_url}/membership')
