@@ -18,6 +18,10 @@ COOKIE_DOMAIN = f'https://{DOMAIN}'
 
 SELECTOR_LOGIN_USER_ID = 'input[placeholder="아이디"]'
 SELECTOR_LOGIN_PASSWORD = 'input[placeholder="비밀번호"]'
+SELECTOR_KEEP_LOGIN = 'label:has-text("로그인 상태 유지")'
+SELECTOR_KEEP_LOGIN_CHECKBOX = (
+    'label:has-text("로그인 상태 유지") input[type="checkbox"]'
+)
 
 BOOK_COVER_IMAGE_URL_FORMAT = 'https://img.ridicdn.net/cover/{book_id}/xxlarge#1'
 
@@ -108,6 +112,12 @@ class RidiClient(BrowserBaseClient):
 
             page.locator(SELECTOR_LOGIN_USER_ID).fill(self.user_id)
             page.locator(SELECTOR_LOGIN_PASSWORD).fill(self.password)
+
+            # Enable "keep me logged in" for longer session cookie lifetime
+            # The checkbox is a hidden custom element; click the label wrapper instead
+            keep_login_checkbox = page.locator(SELECTOR_KEEP_LOGIN_CHECKBOX)
+            if not keep_login_checkbox.is_checked():
+                page.locator(SELECTOR_KEEP_LOGIN).click()
 
             page.click('button[type="submit"]')
 
