@@ -5,16 +5,6 @@ FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv
 
 FROM python:${PYTHON_VERSION}-slim-bookworm AS python-base
 
-ARG UID=1001
-ARG VERSION
-ARG REVISION=""
-
-LABEL org.opencontainers.image.title="ridiwise" \
-    org.opencontainers.image.version="${VERSION}" \
-    org.opencontainers.image.url="https://github.com/bskim45/ridiwise" \
-    org.opencontainers.image.source="https://github.com/bskim45/ridiwise" \
-    org.opencontainers.image.authors="Bumsoo Kim <bskim45@gmail.com>"
-
 ENV PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
@@ -26,6 +16,7 @@ ENV PATH="$VENV_PATH/bin:$PATH"
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
 RUN useradd -m -u 1001 noroot
+
 
 FROM python-base AS build-venv
 ARG UV_VERSION
@@ -50,6 +41,15 @@ RUN playwright install --with-deps chromium \
 
 
 FROM build-playwright AS runtime
+
+ARG VERSION
+ARG REVISION=""
+
+LABEL org.opencontainers.image.title="ridiwise" \
+    org.opencontainers.image.version="${VERSION}" \
+    org.opencontainers.image.url="https://github.com/bskim45/ridiwise" \
+    org.opencontainers.image.source="https://github.com/bskim45/ridiwise" \
+    org.opencontainers.image.authors="Bumsoo Kim <bskim45@gmail.com>"
 
 WORKDIR /app
 
