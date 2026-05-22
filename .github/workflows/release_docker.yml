@@ -50,7 +50,7 @@ jobs:
       # output: edge,latest,1.2.3
       - name: Extract Docker metadata
         id: docker-meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: |
             ${{ env.DOCKERHUB_REGISTRY }}/${{ env.IMAGE_NAME }}
